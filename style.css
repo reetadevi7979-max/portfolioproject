@@ -1,0 +1,20 @@
+.image { 
+  border: 2px solid white; 
+  display: flex;          /* Activates flexbox layout */
+  align-items: center;    /* Vertically centers the image and text */
+  width: 100%;            /* Adjust as needed for your container */
+}
+
+/* Selects both the image and the text wrapper inside the container */
+.image img, 
+.image span { 
+  flex: 1;                /* Forces both elements to take up exact equal space (50/50) */
+  width: 50%;             /* Ensures strict 50% split */
+  box-sizing: border-box; /* Includes padding/borders in the 50% width calculation */
+}
+
+/* Optional: Adds space between the image and the text */
+.image span {
+  padding-left: 15px; 
+  color: white;           /* Matches your dark background */
+}
