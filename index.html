@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio — Web Developer</title>
+<title>Aryan — Full-Stack Developer</title>
 <style>
   :root{
     --bg:#fbfbfd;
@@ -13,125 +13,196 @@
     --blue:#0071e3;
     --blue-dark:#0059b3;
     --dark:#000000;
-    --dark-panel:#0a0a0c;
     --card:#ffffff;
     --radius:20px;
+    --ease:cubic-bezier(.22,1,.36,1);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
-    font-family:-apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-family:-apple-system,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;
     background:var(--bg);
     color:var(--ink);
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
 
+  /* progress bar */
+  #progress{
+    position:fixed;top:0;left:0;height:2px;background:var(--blue);z-index:200;
+    width:0%;transition:width .1s linear;
+  }
+
   /* NAV */
   header{
     position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(251,251,253,0.8);
+    background:rgba(251,251,253,0.7);
     backdrop-filter:saturate(180%) blur(20px);
     -webkit-backdrop-filter:saturate(180%) blur(20px);
     border-bottom:1px solid rgba(0,0,0,0.05);
+    transition:box-shadow .3s var(--ease);
   }
+  header.scrolled{box-shadow:0 1px 0 rgba(0,0,0,0.06);}
   nav{
-    max-width:1100px;margin:0 auto;padding:0 24px;
+    max-width:1120px;margin:0 auto;padding:0 24px;
     height:52px;display:flex;align-items:center;justify-content:space-between;
   }
   .logo{font-weight:600;font-size:15px;letter-spacing:-0.01em;}
-  .navlinks{display:flex;gap:34px;}
-  .navlinks a{font-size:12px;color:var(--ink);opacity:0.85;letter-spacing:0.01em;}
-  .navlinks a:hover{opacity:1;}
-  .nav-cta{
-    font-size:12px;background:var(--ink);color:#fff;padding:7px 16px;border-radius:980px;
+  .navlinks{display:flex;gap:30px;}
+  .navlinks a{font-size:12.5px;color:var(--ink);opacity:0.8;position:relative;padding:4px 0;}
+  .navlinks a::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--ink);
+    transition:width .25s var(--ease);
   }
+  .navlinks a:hover{opacity:1;}
+  .navlinks a:hover::after{width:100%;}
+  .nav-cta{
+    font-size:12.5px;background:var(--ink);color:#fff;padding:7px 16px;border-radius:980px;
+    transition:transform .2s var(--ease),background .2s;
+  }
+  .nav-cta:hover{background:var(--blue);transform:scale(1.04);}
 
-  section{padding:120px 24px;max-width:1100px;margin:0 auto;}
+  section{padding:140px 24px;max-width:1120px;margin:0 auto;}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal-scale{opacity:0;transform:scale(.96);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+  .reveal-scale.in{opacity:1;transform:scale(1);}
+  .stagger > * {opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .stagger.in > *{opacity:1;transform:translateY(0);}
+  .stagger.in > *:nth-child(1){transition-delay:.05s;}
+  .stagger.in > *:nth-child(2){transition-delay:.12s;}
+  .stagger.in > *:nth-child(3){transition-delay:.19s;}
+  .stagger.in > *:nth-child(4){transition-delay:.26s;}
+  .stagger.in > *:nth-child(5){transition-delay:.33s;}
+  .stagger.in > *:nth-child(6){transition-delay:.40s;}
 
   /* HERO */
   .hero{
-    padding-top:170px;padding-bottom:80px;text-align:center;
+    padding-top:180px;padding-bottom:80px;text-align:center;position:relative;
+  }
+  .hero::before{
+    content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+    width:900px;height:600px;
+    background:radial-gradient(ellipse at center, rgba(0,113,227,0.14), transparent 65%);
+    z-index:-1;pointer-events:none;
   }
   .eyebrow{
-    font-size:14px;color:var(--blue);font-weight:600;letter-spacing:0.02em;margin-bottom:14px;
+    font-size:14px;color:var(--blue);font-weight:600;letter-spacing:0.02em;margin-bottom:16px;
+    opacity:0;animation:fadeUp .8s var(--ease) forwards;
   }
   h1.hero-title{
-    font-size:clamp(40px,7vw,80px);
-    font-weight:700;
-    letter-spacing:-0.03em;
-    line-height:1.04;
-    margin:0 0 20px;
+    font-size:clamp(40px,7vw,82px);
+    font-weight:700;letter-spacing:-0.03em;line-height:1.04;margin:0 0 22px;
+    opacity:0;animation:fadeUp .9s var(--ease) .1s forwards;
   }
   .hero-sub{
-    font-size:clamp(18px,2.4vw,24px);
-    color:var(--muted);
-    font-weight:400;
-    max-width:640px;
-    margin:0 auto 40px;
-    line-height:1.4;
+    font-size:clamp(18px,2.4vw,24px);color:var(--muted);font-weight:400;
+    max-width:640px;margin:0 auto 42px;line-height:1.45;
+    opacity:0;animation:fadeUp .9s var(--ease) .22s forwards;
   }
-  .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:70px;}
+  .hero-ctas{
+    display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:80px;
+    opacity:0;animation:fadeUp .9s var(--ease) .34s forwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
   .btn{
-    display:inline-block;padding:14px 28px;border-radius:980px;font-size:16px;font-weight:500;
-    transition:transform .2s ease, background .2s ease;
+    display:inline-block;padding:14px 30px;border-radius:980px;font-size:16px;font-weight:500;
+    transition:transform .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease);
   }
   .btn-primary{background:var(--blue);color:#fff;}
-  .btn-primary:hover{background:var(--blue-dark);transform:scale(1.02);}
+  .btn-primary:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(0,113,227,0.5);}
   .btn-secondary{background:transparent;color:var(--blue);border:1px solid var(--line);}
-  .btn-secondary:hover{background:rgba(0,0,0,0.03);}
+  .btn-secondary:hover{background:rgba(0,0,0,0.03);transform:translateY(-2px);}
 
   .hero-image{
     border-radius:28px;overflow:hidden;
-    box-shadow:0 40px 80px -30px rgba(0,0,0,0.35);
+    box-shadow:0 50px 90px -30px rgba(0,0,0,0.35);
     aspect-ratio:16/8.2;
+    opacity:0;transform:scale(.97) translateY(20px);
+    animation:heroImg 1s var(--ease) .4s forwards;
   }
-  .hero-image img{width:100%;height:100%;object-fit:cover;}
+  @keyframes heroImg{to{opacity:1;transform:scale(1) translateY(0);}}
+  .hero-image img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);}
+  .hero-image:hover img{transform:scale(1.03);}
+
+  /* MARQUEE trust strip */
+  .marquee-wrap{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;background:var(--bg);}
+  .marquee{display:flex;gap:60px;white-space:nowrap;animation:scroll 26s linear infinite;width:max-content;}
+  .marquee span{font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0.02em;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
   /* STATS */
   .stats{
     display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
-    padding:70px 24px;max-width:1100px;margin:0 auto;
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:80px 24px;max-width:1120px;margin:0 auto;
   }
   .stat{text-align:center;}
-  .stat .num{font-size:clamp(32px,4vw,48px);font-weight:700;letter-spacing:-0.02em;color:var(--ink);}
-  .stat .label{font-size:14px;color:var(--muted);margin-top:6px;}
+  .stat .num{font-size:clamp(32px,4vw,50px);font-weight:700;letter-spacing:-0.02em;color:var(--ink);}
+  .stat .label{font-size:14px;color:var(--muted);margin-top:8px;}
 
   /* SECTION HEADS */
-  .section-head{text-align:center;margin-bottom:60px;}
+  .section-head{text-align:center;margin-bottom:64px;}
   .section-head .kicker{font-size:14px;color:var(--blue);font-weight:600;margin-bottom:10px;}
   .section-head h2{font-size:clamp(32px,4.5vw,48px);font-weight:700;letter-spacing:-0.025em;margin:0 0 14px;}
   .section-head p{font-size:19px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.5;}
 
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;}
+  .about-photo{border-radius:24px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 30px 60px -25px rgba(0,0,0,0.3);}
+  .about-photo img{width:100%;height:100%;object-fit:cover;}
+  .about-text p{font-size:18px;line-height:1.7;color:var(--muted);margin:0 0 18px;}
+  .about-text p strong{color:var(--ink);font-weight:600;}
+  .about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .about-tag{
+    font-size:13px;padding:8px 16px;border:1px solid var(--line);border-radius:980px;color:var(--ink);
+    transition:border-color .2s,transform .2s;
+  }
+  .about-tag:hover{border-color:var(--blue);transform:translateY(-2px);}
+
   /* SERVICES */
   .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   .service-card{
-    background:var(--card);border-radius:var(--radius);padding:36px 30px;
+    background:var(--card);border-radius:var(--radius);padding:38px 30px;
     border:1px solid var(--line);
-    transition:transform .25s ease, box-shadow .25s ease;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s;
   }
-  .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -20px rgba(0,0,0,0.2);}
+  .service-card:hover{transform:translateY(-8px);box-shadow:0 24px 48px -20px rgba(0,0,0,0.22);border-color:transparent;}
   .service-icon{
     width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg,#0071e3,#00c6fb);
     margin-bottom:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:600;
+    transition:transform .35s var(--ease);
   }
+  .service-card:hover .service-icon{transform:rotate(-8deg) scale(1.08);}
   .service-card h3{font-size:20px;font-weight:600;margin:0 0 10px;letter-spacing:-0.01em;}
   .service-card p{font-size:15px;color:var(--muted);line-height:1.55;margin:0;}
+
+  /* TECH STACK */
+  .stack-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+  .stack-item{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:24px 12px;text-align:center;transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  }
+  .stack-item:hover{transform:translateY(-6px);box-shadow:0 16px 30px -18px rgba(0,0,0,0.25);}
+  .stack-item .icon{font-size:26px;margin-bottom:10px;}
+  .stack-item .name{font-size:13px;color:var(--muted);font-weight:500;}
 
   /* WORK */
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
   .work-card{
     border-radius:var(--radius);overflow:hidden;background:var(--card);
     border:1px solid var(--line);
-    transition:transform .3s ease;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease);
   }
-  .work-card:hover{transform:translateY(-4px);}
+  .work-card:hover{transform:translateY(-6px);box-shadow:0 30px 50px -25px rgba(0,0,0,0.28);}
   .work-image{aspect-ratio:16/10;overflow:hidden;}
-  .work-image img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
-  .work-card:hover .work-image img{transform:scale(1.05);}
+  .work-image img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+  .work-card:hover .work-image img{transform:scale(1.06);}
   .work-body{padding:22px 26px 28px;}
   .work-tag{font-size:12px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.04em;}
   .work-body h3{font-size:21px;font-weight:600;margin:8px 0 6px;letter-spacing:-0.01em;}
@@ -141,34 +212,78 @@
   .process-list{display:flex;flex-direction:column;gap:0;}
   .process-row{
     display:grid;grid-template-columns:70px 1fr;gap:24px;
-    padding:32px 0;border-bottom:1px solid var(--line);
-    align-items:start;
+    padding:34px 0;border-bottom:1px solid var(--line);
+    align-items:start;transition:padding-left .3s var(--ease);
   }
+  .process-row:hover{padding-left:10px;}
   .process-row:last-child{border-bottom:none;}
   .process-num{font-size:15px;font-weight:600;color:var(--blue);}
   .process-row h3{font-size:20px;font-weight:600;margin:0 0 8px;letter-spacing:-0.01em;}
   .process-row p{font-size:16px;color:var(--muted);margin:0;max-width:600px;line-height:1.55;}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;}
+  .price-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:36px 30px;display:flex;flex-direction:column;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+  }
+  .price-card:hover{transform:translateY(-8px);box-shadow:0 26px 50px -22px rgba(0,0,0,0.25);}
+  .price-card.featured{border:2px solid var(--blue);position:relative;}
+  .price-badge{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    background:var(--blue);color:#fff;font-size:12px;font-weight:600;padding:5px 14px;border-radius:980px;
+  }
+  .price-card h3{font-size:20px;font-weight:600;margin:0 0 6px;}
+  .price-card .price{font-size:36px;font-weight:700;letter-spacing:-0.02em;margin:10px 0 20px;}
+  .price-card .price span{font-size:15px;color:var(--muted);font-weight:400;}
+  .price-list{list-style:none;padding:0;margin:0 0 28px;flex:1;}
+  .price-list li{font-size:15px;color:var(--muted);padding:9px 0;border-top:1px solid var(--line);}
+  .price-list li:first-child{border-top:none;}
 
   /* TESTIMONIALS */
   .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   .testi-card{
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:30px 28px;display:flex;flex-direction:column;justify-content:space-between;
+    transition:transform .3s var(--ease),box-shadow .3s var(--ease);
   }
+  .testi-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -20px rgba(0,0,0,0.2);}
   .testi-quote{font-size:16px;line-height:1.6;color:var(--ink);margin:0 0 24px;}
   .testi-person{display:flex;align-items:center;gap:12px;}
   .avatar{width:38px;height:38px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--muted);}
   .testi-name{font-size:14px;font-weight:600;}
   .testi-role{font-size:13px;color:var(--muted);}
 
+  /* FAQ */
+  .faq-list{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:24px 4px;cursor:pointer;font-size:17px;font-weight:500;
+  }
+  .faq-q .plus{font-size:20px;color:var(--blue);transition:transform .3s var(--ease);}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0;overflow:hidden;transition:max-height .4s var(--ease), padding .4s var(--ease);
+    font-size:15px;color:var(--muted);line-height:1.6;padding:0 4px;
+  }
+  .faq-item.open .faq-a{max-height:200px;padding:0 4px 24px;}
+
   /* CONTACT DARK */
   .contact-section{
     background:var(--dark);color:#fff;border-radius:32px;
-    padding:100px 40px;text-align:center;max-width:1100px;margin:0 auto 40px;
+    padding:110px 40px;text-align:center;max-width:1120px;margin:0 auto 40px;
+    position:relative;overflow:hidden;
   }
-  .contact-section h2{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-0.03em;margin:0 0 18px;}
-  .contact-section p{font-size:19px;color:#a1a1a6;max-width:520px;margin:0 auto 40px;line-height:1.5;}
-  .contact-section .btn-primary{background:#fff;color:#000;}
+  .contact-section::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(0,113,227,0.25), transparent 55%);
+    pointer-events:none;
+  }
+  .contact-section h2{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-0.03em;margin:0 0 18px;position:relative;}
+  .contact-section p{font-size:19px;color:#a1a1a6;max-width:520px;margin:0 auto 40px;line-height:1.5;position:relative;}
+  .contact-section .btn-primary{background:#fff;color:#000;position:relative;}
   .contact-section .btn-primary:hover{background:#e8e8ed;}
 
   footer{
@@ -177,23 +292,61 @@
   }
   footer a{color:var(--blue);}
 
-  @media (max-width:820px){
+  /* CONTACT FORM MODAL */
+  .form-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.5);
+    display:none;align-items:center;justify-content:center;z-index:300;
+    padding:20px;opacity:0;transition:opacity .3s var(--ease);
+  }
+  .form-overlay.open{display:flex;opacity:1;}
+  .form-modal{
+    background:var(--card);border-radius:24px;padding:36px;max-width:440px;width:100%;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.4);
+    transform:translateY(20px) scale(.97);opacity:0;
+    transition:transform .35s var(--ease),opacity .35s var(--ease);
+  }
+  .form-overlay.open .form-modal{transform:translateY(0) scale(1);opacity:1;}
+  .form-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .form-header h3{font-size:22px;font-weight:700;letter-spacing:-0.02em;margin:0;}
+  .form-close{
+    background:none;border:none;font-size:16px;color:var(--muted);cursor:pointer;
+    width:30px;height:30px;border-radius:50%;transition:background .2s;
+  }
+  .form-close:hover{background:var(--bg);}
+  .form-sub{font-size:14px;color:var(--muted);margin:0 0 24px;line-height:1.5;}
+  #contactForm{display:flex;flex-direction:column;gap:16px;}
+  #contactForm label{font-size:13px;font-weight:500;color:var(--ink);display:flex;flex-direction:column;gap:6px;}
+  #contactForm input,#contactForm select,#contactForm textarea{
+    font-family:inherit;font-size:15px;padding:11px 14px;border-radius:12px;
+    border:1px solid var(--line);background:var(--bg);color:var(--ink);
+    transition:border-color .2s,box-shadow .2s;resize:vertical;
+  }
+  #contactForm input:focus,#contactForm select:focus,#contactForm textarea:focus{
+    outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,0.15);
+  }
+
+  @media (max-width:900px){
     .stats{grid-template-columns:repeat(2,1fr);}
-    .services-grid,.work-grid,.testi-grid{grid-template-columns:1fr;}
+    .services-grid,.work-grid,.testi-grid,.pricing-grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr;}
+    .stack-grid{grid-template-columns:repeat(3,1fr);}
     .navlinks{display:none;}
-    section{padding:80px 20px;}
+    section{padding:90px 20px;}
   }
 </style>
 </head>
 <body>
 
-<header>
+<div id="progress"></div>
+
+<header id="siteHeader">
   <nav>
-    <div class="logo">Aditya singh</div>
+    <div class="logo">Aryan</div>
     <div class="navlinks">
+      <a href="#about">About</a>
       <a href="#work">Work</a>
       <a href="#services">Services</a>
-      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
       <a href="#testimonials">Clients</a>
     </div>
     <a href="#contact" class="nav-cta">Let's talk</a>
@@ -213,20 +366,48 @@
   </div>
 </section>
 
-<div class="stats">
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Retail</span><span>Healthcare</span><span>SaaS</span><span>Hospitality</span><span>Education</span><span>Finance</span><span>Real Estate</span><span>Logistics</span>
+    <span>Retail</span><span>Healthcare</span><span>SaaS</span><span>Hospitality</span><span>Education</span><span>Finance</span><span>Real Estate</span><span>Logistics</span>
+  </div>
+</div>
+
+<div class="stats stagger reveal">
   <div class="stat"><div class="num">4+</div><div class="label">Years building software</div></div>
   <div class="stat"><div class="num">50+</div><div class="label">Businesses served</div></div>
   <div class="stat"><div class="num">80+</div><div class="label">Projects shipped</div></div>
   <div class="stat"><div class="num">98%</div><div class="label">Client satisfaction</div></div>
 </div>
 
+<section id="about">
+  <div class="about-grid">
+    <div class="about-photo reveal-scale">
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Laptop with code editor open on a desk">
+    </div>
+    <div class="about-text reveal">
+      <div class="eyebrow" style="margin-bottom:14px;">About me</div>
+      <p><strong>I'm Aryan</strong> — a full-stack developer with four years of experience turning ideas into working software. I've spent that time building for small businesses, startups, and growing teams who need something that actually works, not just looks nice in a demo.</p>
+      <p>My approach is simple: understand the business first, then write the code. I've delivered <strong>80+ projects</strong> for <strong>50+ clients</strong>, from single-page business sites to full internal platforms handling real operations.</p>
+      <div class="about-tags">
+        <span class="about-tag">JavaScript / TypeScript</span>
+        <span class="about-tag">React & Next.js</span>
+        <span class="about-tag">Node.js</span>
+        <span class="about-tag">Python</span>
+        <span class="about-tag">PostgreSQL</span>
+        <span class="about-tag">AWS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="services">
-  <div class="section-head">
+  <div class="section-head reveal">
     <div class="kicker">Services</div>
     <h2>What I build</h2>
     <p>End-to-end development, from the first line of code to the day it ships.</p>
   </div>
-  <div class="services-grid">
+  <div class="services-grid stagger reveal">
     <div class="service-card">
       <div class="service-icon">◆</div>
       <h3>Business websites</h3>
@@ -260,13 +441,29 @@
   </div>
 </section>
 
+<section id="stack">
+  <div class="section-head reveal">
+    <div class="kicker">Tech stack</div>
+    <h2>Tools I build with</h2>
+    <p>A modern, proven stack chosen for speed, reliability, and long-term maintainability.</p>
+  </div>
+  <div class="stack-grid stagger reveal">
+    <div class="stack-item"><div class="icon">⚛</div><div class="name">React</div></div>
+    <div class="stack-item"><div class="icon">▲</div><div class="name">Next.js</div></div>
+    <div class="stack-item"><div class="icon">⬢</div><div class="name">Node.js</div></div>
+    <div class="stack-item"><div class="icon">🐍</div><div class="name">Python</div></div>
+    <div class="stack-item"><div class="icon">🐘</div><div class="name">PostgreSQL</div></div>
+    <div class="stack-item"><div class="icon">☁</div><div class="name">AWS</div></div>
+  </div>
+</section>
+
 <section id="work">
-  <div class="section-head">
+  <div class="section-head reveal">
     <div class="kicker">Selected work</div>
     <h2>Recent projects</h2>
     <p>A sample of the software and websites built for clients across industries.</p>
   </div>
-  <div class="work-grid">
+  <div class="work-grid stagger reveal">
     <div class="work-card">
       <div class="work-image">
         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop" alt="Analytics dashboard on screen">
@@ -311,12 +508,12 @@
 </section>
 
 <section id="process">
-  <div class="section-head">
+  <div class="section-head reveal">
     <div class="kicker">How it works</div>
     <h2>A clear process, start to finish</h2>
     <p>No surprises — you know what's happening at every stage.</p>
   </div>
-  <div class="process-list">
+  <div class="process-list reveal">
     <div class="process-row">
       <div class="process-num">01</div>
       <div><h3>Discovery call</h3><p>We talk through what your business needs, your budget, and your timeline.</p></div>
@@ -336,13 +533,57 @@
   </div>
 </section>
 
+<section id="pricing">
+  <div class="section-head reveal">
+    <div class="kicker">Pricing</div>
+    <h2>Straightforward packages</h2>
+    <p>Every project is different — these are starting points, not fixed quotes.</p>
+  </div>
+  <div class="pricing-grid stagger reveal">
+    <div class="price-card">
+      <h3>Starter site</h3>
+      <div class="price">$800<span> / project</span></div>
+      <ul class="price-list">
+        <li>Up to 5 pages</li>
+        <li>Responsive design</li>
+        <li>Basic SEO setup</li>
+        <li>2 weeks delivery</li>
+      </ul>
+      <button class="btn btn-secondary" onclick="openContactForm('Starter site')">Get started</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Most popular</div>
+      <h3>Business platform</h3>
+      <div class="price">$2,500<span> / project</span></div>
+      <ul class="price-list">
+        <li>Custom design & build</li>
+        <li>CMS or admin panel</li>
+        <li>Integrations (payments, CRM)</li>
+        <li>4–6 weeks delivery</li>
+      </ul>
+      <button class="btn btn-primary" onclick="openContactForm('Business platform')">Get started</button>
+    </div>
+    <div class="price-card">
+      <h3>Custom software</h3>
+      <div class="price">Custom<span> quote</span></div>
+      <ul class="price-list">
+        <li>Full-stack application</li>
+        <li>Database & API architecture</li>
+        <li>Ongoing support included</li>
+        <li>Timeline scoped together</li>
+      </ul>
+      <button class="btn btn-secondary" onclick="openContactForm('Custom software')">Talk to me</button>
+    </div>
+  </div>
+</section>
+
 <section id="testimonials">
-  <div class="section-head">
+  <div class="section-head reveal">
     <div class="kicker">Client feedback</div>
     <h2>Trusted by 50+ businesses</h2>
     <p>Here's what a few of them have to say.</p>
   </div>
-  <div class="testi-grid">
+  <div class="testi-grid stagger reveal">
     <div class="testi-card">
       <p class="testi-quote">Delivered ahead of schedule and the site has been rock solid since launch. Communication was excellent throughout.</p>
       <div class="testi-person">
@@ -367,17 +608,135 @@
   </div>
 </section>
 
+<section id="faq">
+  <div class="section-head reveal">
+    <div class="kicker">FAQ</div>
+    <h2>Common questions</h2>
+  </div>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <div class="faq-q"><span>How long does a typical project take?</span><span class="plus">+</span></div>
+      <div class="faq-a">Most business websites take 2–4 weeks. Custom software depends on scope, usually 4–10 weeks, and I'll give you a clear timeline before we start.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Do you work with clients outside your country?</span><span class="plus">+</span></div>
+      <div class="faq-a">Yes, I work with clients globally and adjust calls and communication to your time zone.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What if I need changes after launch?</span><span class="plus">+</span></div>
+      <div class="faq-a">Every project includes a support window after launch, and ongoing maintenance plans are available after that.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Do you offer fixed pricing?</span><span class="plus">+</span></div>
+      <div class="faq-a">For well-defined projects, yes. For larger custom software, I scope it with you first so pricing is accurate and fair.</div>
+    </div>
+  </div>
+</section>
+
 <section id="contact" style="padding-top:40px;">
-  <div class="contact-section">
+  <div class="contact-section reveal-scale">
     <h2>Have a project in mind?</h2>
     <p>Tell me about your business and what you're trying to build. I'll get back to you within a day.</p>
-    <a href="mailto:hello@aaravmehta.dev" class="btn btn-primary">Get in touch</a>
+    <button class="btn btn-primary" onclick="openContactForm('General inquiry')">Get in touch</button>
   </div>
 </section>
 
 <footer>
-  © 2026 Aarav Mehta. Built with care. <a href="reetadevi7979@gmail.com">reetadevi7979@gmail.com</a>
+  © 2026 Aryan. Built with care. <a href="mailto:ar.work.freelance@gmail.com">ar.work.freelance@gmail.com</a>
 </footer>
+
+<div id="formOverlay" class="form-overlay">
+  <div class="form-modal">
+    <div class="form-header">
+      <h3>Start a conversation</h3>
+      <button class="form-close" onclick="closeContactForm()" aria-label="Close">✕</button>
+    </div>
+    <p class="form-sub">Fill this in and it'll open in your email app, ready to send to Aryan.</p>
+    <form id="contactForm" onsubmit="submitContactForm(event)">
+      <label>Your name
+        <input type="text" id="cf-name" required placeholder="Full name">
+      </label>
+      <label>Your email
+        <input type="email" id="cf-email" required placeholder="you@company.com">
+      </label>
+      <label>Interested in
+        <select id="cf-package">
+          <option>Starter site</option>
+          <option>Business platform</option>
+          <option>Custom software</option>
+          <option>General inquiry</option>
+        </select>
+      </label>
+      <label>Project details
+        <textarea id="cf-message" required rows="4" placeholder="Tell me a bit about your business and what you need"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary" style="width:100%;text-align:center;border:none;cursor:pointer;">Send message</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // scroll progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+    document.getElementById('siteHeader').classList.toggle('scrolled', h.scrollTop > 4);
+  });
+
+  // reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal, .reveal-scale, .stagger').forEach(el => observer.observe(el));
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // contact form modal
+  const overlay = document.getElementById('formOverlay');
+  function openContactForm(packageName){
+    document.getElementById('cf-package').value = packageName;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeContactForm(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeContactForm(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeContactForm(); });
+
+  function submitContactForm(e){
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const pkg = document.getElementById('cf-package').value;
+    const message = document.getElementById('cf-message').value.trim();
+
+    const subject = encodeURIComponent('New inquiry: ' + pkg + ' — from ' + name);
+    const body = encodeURIComponent(
+      'Name: ' + name + '\n' +
+      'Email: ' + email + '\n' +
+      'Interested in: ' + pkg + '\n\n' +
+      'Message:\n' + message
+    );
+    window.location.href = 'mailto:ar.work.freelance@gmail.com?subject=' + subject + '&body=' + body;
+    closeContactForm();
+  }
+</script>
 
 </body>
 </html>
