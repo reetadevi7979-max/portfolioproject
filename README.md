@@ -2,7 +2,7 @@
 
 An ultra-responsive, Apple-inspired personal portfolio and client acquisition platform built for full-stack engineering, custom web applications, and digital solutions.
 
-🔗 **Live Demo:** [https://portfolioproject-i2o1wx4wr-reetadevi7979-maxs-projects.vercel.app/](https://portfolioproject-i2o1wx4wr-reetadevi7979-maxs-projects.vercel.app/)
+🔗 **Live Demo:** [https://portfolioproject-xi-one.vercel.app/](https://portfolioproject-xi-one.vercel.app/)
 
 ---
 
